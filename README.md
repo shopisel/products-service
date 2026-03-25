@@ -40,10 +40,8 @@ Within the Shopisel ecosystem, this service works alongside:
 
 ## 🏗️ Tech Stack
 
-*(Adjust based on your actual stack)*
-
 - .NET (ASP.NET Core)  
 - Entity Framework Core  
 - SQL Database (e.g., PostgreSQL / SQL Server)  
-- Docker (optional)  
+- Docker
 
