@@ -14,6 +14,10 @@ public class ProductsApiTests(ProductServiceApiFactory factory) : IClassFixture<
     {
         using var scope = factory.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ProductServiceDbContext>();
+
+        dbContext.Database.EnsureDeleted();
+        dbContext.Database.EnsureCreated();
+
         dbContext.Products.AddRange(
             new ProductEntity { Id = "prod_1", Name = "Leite UHT", Image = "leite.png" },
             new ProductEntity { Id = "prod_2", Name = "Cereais", Image = "cereais.png" },
