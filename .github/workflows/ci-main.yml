@@ -17,7 +17,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: src  # Todos os steps vão correr dentro de src
+        working-directory: src  
 
     steps:
     - uses: actions/checkout@v4
