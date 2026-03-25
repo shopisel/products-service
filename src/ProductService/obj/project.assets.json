@@ -2207,19 +2207,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\marti\\.nuget\\packages\\": {}
+    "C:\\Users\\Utilizador\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\ISEL\\3ano\\projeto\\shopisel\\products-service\\src\\ProductService\\ProductService.csproj",
+      "projectUniqueName": "C:\\Projeto\\products-service\\src\\ProductService\\ProductService.csproj",
       "projectName": "shopisel-product-service",
-      "projectPath": "C:\\ISEL\\3ano\\projeto\\shopisel\\products-service\\src\\ProductService\\ProductService.csproj",
-      "packagesPath": "C:\\Users\\marti\\.nuget\\packages\\",
-      "outputPath": "C:\\ISEL\\3ano\\projeto\\shopisel\\products-service\\src\\ProductService\\obj\\",
+      "projectPath": "C:\\Projeto\\products-service\\src\\ProductService\\ProductService.csproj",
+      "packagesPath": "C:\\Users\\Utilizador\\.nuget\\packages\\",
+      "outputPath": "C:\\Projeto\\products-service\\src\\ProductService\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\marti\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Utilizador\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
@@ -2243,7 +2243,7 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.200"
+      "SdkAnalysisLevel": "10.0.100"
     },
     "frameworks": {
       "net10.0": {
@@ -2287,7 +2287,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
