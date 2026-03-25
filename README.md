@@ -47,6 +47,3 @@ Within the Shopisel ecosystem, this service works alongside:
 - SQL Database (e.g., PostgreSQL / SQL Server)  
 - Docker (optional)  
 
----
-
-## 📡 API Overview
