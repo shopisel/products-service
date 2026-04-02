@@ -1,4 +1,4 @@
-name: CI - Develop (Build & Test)
+name: CI - Develop (Tests)
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ "develop" ]
 
 jobs:
-  build-test:
+  test:
     runs-on: ubuntu-latest
 
     defaults:
@@ -25,12 +25,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Build
-      run: dotnet build --no-restore
-
     - name: Test with coverage
       run: |
-        dotnet test --no-build --verbosity normal \
+        dotnet test --verbosity normal \
           /p:CollectCoverage=true \
           /p:CoverletOutput=./TestResults/coverage.opencover.xml \
           /p:CoverletOutputFormat=opencover

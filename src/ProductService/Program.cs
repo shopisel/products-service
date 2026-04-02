@@ -23,6 +23,7 @@ builder.Services.AddDbContext<ProductServiceDbContext>(options =>
 
 // Register custom services
 builder.Services.AddScoped<IProductService, ProductService.Services.ProductService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 
@@ -37,6 +38,7 @@ await InitializeDatabaseAsync(app);
 
 // Map Endpoint slices
 app.MapProductEndpoints();
+app.MapCategoryEndpoints();
 
 await app.RunAsync();
 
