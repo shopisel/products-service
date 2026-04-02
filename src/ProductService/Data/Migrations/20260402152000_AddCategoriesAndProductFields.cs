@@ -24,10 +24,8 @@ public partial class AddCategoriesAndProductFields : Migration
                 table.PrimaryKey("PK_categories", x => x.id);
             });
 
-        migrationBuilder.InsertData(
-            table: "categories",
-            columns: new[] { "id", "name", "image" },
-            values: new object[] { "cat_uncategorized", "Uncategorized", string.Empty });
+        migrationBuilder.Sql(
+            "INSERT INTO categories (id, name, image) VALUES ('cat_uncategorized', 'Uncategorized', '') ON CONFLICT (id) DO NOTHING;");
 
         migrationBuilder.AddColumn<string>(
             name: "barcode",
