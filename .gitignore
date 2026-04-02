@@ -1,39 +1,56 @@
-# Build outputs
-**/bin/
-**/obj/
-**/[Dd]ebug/
-**/[Rr]elease/
+# Build results
+bin/
+obj/
 
-# Visual Studio / Rider / VS Code
+# Visual Studio
 .vs/
-.idea/
-.vscode/
-*.suo
 *.user
+*.suo
 *.userosscache
 *.sln.docstates
 
-# OS files
-Thumbs.db
-Desktop.ini
-.DS_Store
+# Rider
+.idea/
 
-# Test results / coverage
-**/TestResults/
-**/*.trx
-**/*.coverage
-**/*.coveragexml
-**/coverage/
-**/coverage-reports/
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
 
 # NuGet
+*.nupkg
+*.snupkg
 packages/
-**/*.nupkg
-**/*.snupkg
-**/project.lock.json
-**/project.fragment.lock.json
-**/artifacts/
+.nuget/
+*.nuget.props
+*.nuget.targets
 
-# Local dotnet CLI home (used in sandbox)
+# Test results
+TestResults/
+*.trx
+
+# Coverage
+coverage/
+*.coverage
+*.coveragexml
+
+# Publish output
+publish/
+
+# Local environment
+.env
+
+# Temporary files
+*.tmp
+*.temp
 .dotnet/
+.appdata/
+*.db
 
+# Sonar
+.sonarqube/

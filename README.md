@@ -1,47 +1,43 @@
-## 📦 Products Service
+# Product Service
 
-The **Products Service** is a core microservice of the Shopisel platform, responsible for managing product data aggregated from multiple retailers.
+The `products-service` manages categories and products in the Shopisel ecosystem.
 
-It acts as a centralized layer that stores, normalizes, and serves product information collected by external scraping services, enabling price comparison across different stores.
+## Responsibilities
 
----
+- Manage product categories
+- Create, update and delete products
+- Query products by ids, category or name
+- Enforce category integrity (category delete blocked when products exist)
 
-## 🚀 Purpose
+## API Overview
 
-This service provides a unified API to:
+Category endpoints:
 
-- Store product information (name, brand, category, etc.)
-- Aggregate prices from different supermarkets
-- Track price history over time
-- Enable fast product search and filtering
-- Support price comparison features in client applications
+- `GET /categories`
+- `POST /categories`
+- `PUT /categories/{categoryId}`
+- `DELETE /categories/{categoryId}`
 
----
+Product endpoints:
 
-## 🧩 Role in the Architecture
+- `GET /products?ids=prod_1,prod_2`
+- `GET /products?categoryId=cat_food`
+- `GET /products?name=leite`
+- `POST /products`
+- `PUT /products/{productId}`
+- `DELETE /products/{productId}`
 
-Within the Shopisel ecosystem, this service works alongside:
+`GET /products` requires at least one filter (`ids`, `categoryId`, or `name`).
 
-- **Scraper Services** → Collect product and price data from retailers  
-- **Products Service (this repo)** → Stores and organizes product data  
-- **API Gateway / Frontend** → Consumes product data for users  
+## Authentication
 
----
+This service does not require authentication.
 
-## 🛠️ Features
+## Project Structure
 
-- 📦 Product catalog management  
-- 💰 Multi-store price aggregation  
-- 📊 Price history tracking  
-- 🔎 Search and filtering capabilities  
-- ⚡ RESTful API for product queries  
-
----
-
-## 🏗️ Tech Stack
-
-- .NET (ASP.NET Core)  
-- Entity Framework Core  
-- SQL Database (e.g., PostgreSQL / SQL Server)  
-- Docker
-
+```text
+src/
+|-- ProductService/
+|-- ProductService.Tests/
+`-- ProductService.slnx
+```

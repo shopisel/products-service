@@ -1,46 +1,234 @@
 openapi: 3.0.0
 info:
-  title: Shopisel API List Service
+  title: Shopisel API Product Service
   version: 1.0.0
-  description: Pedidos relacionados com produtos.
+  description: Pedidos relacionados com categorias e produtos.
 
 servers:
   - url: http://localhost:5000
 
-
 paths:
+  /categories:
+    get:
+      summary: Obter todas as categorias
+      tags: [Category]
+      responses:
+        '200':
+          description: Lista de categorias
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryResponse'
+    post:
+      summary: Criar categoria
+      tags: [Category]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCategoryRequest'
+      responses:
+        '201':
+          description: Categoria criada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+
+  /categories/{categoryId}:
+    put:
+      summary: Atualizar categoria
+      tags: [Category]
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCategoryRequest'
+      responses:
+        '200':
+          description: Categoria atualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+        '404':
+          description: Categoria nao encontrada
+    delete:
+      summary: Apagar categoria
+      tags: [Category]
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Categoria removida
+        '404':
+          description: Categoria nao encontrada
+        '409':
+          description: Categoria com produtos associados
+
   /products:
     get:
-      summary: Obter detalhes de múltiplos produtos
-      description: |
-        Retorna uma lista de produtos baseada nos IDs fornecidos. 
-        Útil para carregar os detalhes após obter os IDs de uma lista de compras.
+      summary: Obter produtos por query
       tags: [Product]
       parameters:
         - name: ids
           in: query
-          description: Lista de IDs de produtos separados por vírgula
-          required: true
-          style: form
-          explode: false
+          description: IDs separados por virgula
+          required: false
           schema:
-            type: array
-            items:
-              type: string
-            example: ["prod_1", "prod_2", "prod_3"]
+            type: string
+            example: prod_1,prod_2
+        - name: categoryId
+          in: query
+          description: ID da categoria
+          required: false
+          schema:
+            type: string
+            example: cat_food
+        - name: name
+          in: query
+          description: Termo de pesquisa por nome
+          required: false
+          schema:
+            type: string
+            example: leite
       responses:
         '200':
-          description: Lista de produtos encontrados
+          description: Lista de produtos
           content:
             application/json:
-              example:
-                - id: "prod_1"
-                  name: "Leite UHT"
-                  brand: "Mimosa"
-                  price: 0.85
-                - id: "prod_2"
-                  name: "Cereais"
-                  brand: "Nestlé"
-                  price: 3.50
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
         '400':
-          description: Formato de IDs inválido
+          description: Filtros invalidos ou em falta
+    post:
+      summary: Criar produto
+      tags: [Product]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductRequest'
+      responses:
+        '201':
+          description: Produto criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+
+  /products/{productId}:
+    put:
+      summary: Atualizar produto
+      tags: [Product]
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductRequest'
+      responses:
+        '200':
+          description: Produto atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        '404':
+          description: Produto nao encontrado
+    delete:
+      summary: Apagar produto
+      tags: [Product]
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Produto removido
+        '404':
+          description: Produto nao encontrado
+
+components:
+  schemas:
+    CategoryResponse:
+      type: object
+      required: [id, name, image]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        image:
+          type: string
+    CreateCategoryRequest:
+      type: object
+      required: [name, image]
+      properties:
+        name:
+          type: string
+        image:
+          type: string
+    UpdateCategoryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        image:
+          type: string
+    ProductResponse:
+      type: object
+      required: [id, name, barcode, categoryId]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        barcode:
+          type: string
+        categoryId:
+          type: string
+    CreateProductRequest:
+      type: object
+      required: [name, barcode, categoryId]
+      properties:
+        name:
+          type: string
+        barcode:
+          type: string
+        categoryId:
+          type: string
+    UpdateProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        barcode:
+          type: string
+        categoryId:
+          type: string
