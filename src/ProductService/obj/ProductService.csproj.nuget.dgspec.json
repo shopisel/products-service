@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projeto\\products-service\\src\\ProductService\\ProductService.csproj": {}
+    "C:\\Projeto\\shopisel\\products-service\\src\\ProductService\\ProductService.csproj": {}
   },
   "projects": {
-    "C:\\Projeto\\products-service\\src\\ProductService\\ProductService.csproj": {
+    "C:\\Projeto\\shopisel\\products-service\\src\\ProductService\\ProductService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projeto\\products-service\\src\\ProductService\\ProductService.csproj",
+        "projectUniqueName": "C:\\Projeto\\shopisel\\products-service\\src\\ProductService\\ProductService.csproj",
         "projectName": "shopisel-product-service",
-        "projectPath": "C:\\Projeto\\products-service\\src\\ProductService\\ProductService.csproj",
+        "projectPath": "C:\\Projeto\\shopisel\\products-service\\src\\ProductService\\ProductService.csproj",
         "packagesPath": "C:\\Users\\Utilizador\\.nuget\\packages\\",
-        "outputPath": "C:\\Projeto\\products-service\\src\\ProductService\\obj\\",
+        "outputPath": "C:\\Projeto\\shopisel\\products-service\\src\\ProductService\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Utilizador\\AppData\\Roaming\\NuGet\\NuGet.Config"

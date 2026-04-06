@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Kgv633e7WgU=",
+  "dgSpecHash": "d4XD4V9fpNc=",
   "success": true,
-  "projectFilePath": "C:\\Projeto\\products-service\\src\\ProductService.Tests\\ProductService.Tests.csproj",
+  "projectFilePath": "C:\\Projeto\\shopisel\\products-service\\src\\ProductService.Tests\\ProductService.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Utilizador\\.nuget\\packages\\coverlet.collector\\6.0.4\\coverlet.collector.6.0.4.nupkg.sha512",
     "C:\\Users\\Utilizador\\.nuget\\packages\\microsoft.aspnetcore.mvc.testing\\10.0.5\\microsoft.aspnetcore.mvc.testing.10.0.5.nupkg.sha512",
