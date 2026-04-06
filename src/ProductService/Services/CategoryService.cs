@@ -15,7 +15,7 @@ public partial class CategoryService : ICategoryService
 
     private static CategoryResponse MapToResponse(CategoryEntity entity)
     {
-        return new CategoryResponse(entity.Id, entity.Name, entity.Image);
+        return new CategoryResponse(entity.Id, entity.Name, entity.Image, entity.ParentCategoryId);
     }
 
     private static string GenerateCategoryId()

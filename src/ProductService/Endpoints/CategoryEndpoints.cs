@@ -18,6 +18,25 @@ public static class CategoryEndpoints
         .WithName("GetCategories")
         .WithSummary("Get all categories");
 
+        categories.MapGet("/main", async (ICategoryService categoryService, CancellationToken ct) =>
+        {
+            var result = await categoryService.GetMainAsync(ct);
+            return Results.Ok(result);
+        })
+        .WithName("GetMainCategories")
+        .WithSummary("Get main categories");
+
+        categories.MapGet("/{categoryId}/subcategories", async (
+            string categoryId,
+            ICategoryService categoryService,
+            CancellationToken ct) =>
+        {
+            var result = await categoryService.GetSubcategoriesAsync(categoryId, ct);
+            return result is null ? Results.NotFound() : Results.Ok(result);
+        })
+        .WithName("GetSubcategories")
+        .WithSummary("Get subcategories by parent category");
+
         categories.MapPost(string.Empty, async (
             [FromBody] CreateCategoryRequest request,
             ICategoryService categoryService,
@@ -73,6 +92,10 @@ public static class CategoryEndpoints
                 DeleteCategoryResult.HasProducts => Results.Conflict(new
                 {
                     message = "Category cannot be deleted because it still has products."
+                }),
+                DeleteCategoryResult.HasSubcategories => Results.Conflict(new
+                {
+                    message = "Category cannot be deleted because it still has subcategories."
                 }),
                 _ => Results.NotFound()
             };

@@ -24,6 +24,14 @@ public partial class CategoryService
             return DeleteCategoryResult.HasProducts;
         }
 
+        var hasSubcategories = await _dbContext.Categories
+            .AnyAsync(currentCategory => currentCategory.ParentCategoryId == id, cancellationToken);
+
+        if (hasSubcategories)
+        {
+            return DeleteCategoryResult.HasSubcategories;
+        }
+
         _dbContext.Categories.Remove(category);
         await _dbContext.SaveChangesAsync(cancellationToken);
         return DeleteCategoryResult.Success;
