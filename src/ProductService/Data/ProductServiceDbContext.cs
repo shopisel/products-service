@@ -50,6 +50,11 @@ public class ProductServiceDbContext(DbContextOptions<ProductServiceDbContext> o
                 .HasColumnType("varchar")
                 .IsRequired();
 
+            entity.Property(product => product.Image)
+                .HasColumnName("image")
+                .HasColumnType("varchar")
+                .IsRequired();
+
             entity.Property(product => product.CategoryId)
                 .HasColumnName("category_id")
                 .HasColumnType("varchar")

@@ -47,6 +47,11 @@ partial class ProductServiceDbContextModelSnapshot : ModelSnapshot
                 .HasColumnType("varchar")
                 .HasColumnName("barcode");
 
+            b.Property<string>("Image")
+                .IsRequired()
+                .HasColumnType("varchar")
+                .HasColumnName("image");
+
             b.Property<string>("CategoryId")
                 .IsRequired()
                 .HasColumnType("varchar")

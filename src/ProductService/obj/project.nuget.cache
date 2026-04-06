@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "he9pt8vbsYQ=",
+  "dgSpecHash": "TjDxwnFIoa0=",
   "success": true,
-  "projectFilePath": "C:\\Projeto\\products-service\\src\\ProductService\\ProductService.csproj",
+  "projectFilePath": "C:\\Projeto\\shopisel\\products-service\\src\\ProductService\\ProductService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Utilizador\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Utilizador\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.5\\microsoft.aspnetcore.openapi.10.0.5.nupkg.sha512",

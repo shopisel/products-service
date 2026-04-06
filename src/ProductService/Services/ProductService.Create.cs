@@ -39,6 +39,7 @@ public partial class ProductService
             Id = GenerateProductId(),
             Name = request.Name.Trim(),
             Barcode = request.Barcode.Trim(),
+            Image = request.Image?.Trim() ?? string.Empty,
             CategoryId = categoryId
         };
 

@@ -19,6 +19,7 @@ public partial class ProductService : IProductService
             entity.Id,
             entity.Name,
             entity.Barcode,
+            entity.Image,
             entity.CategoryId);
     }
 

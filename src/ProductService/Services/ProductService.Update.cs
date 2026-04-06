@@ -38,6 +38,11 @@ public partial class ProductService
             product.Barcode = request.Barcode.Trim();
         }
 
+        if (request.Image is not null)
+        {
+            product.Image = request.Image.Trim();
+        }
+
         if (request.CategoryId is not null)
         {
             if (string.IsNullOrWhiteSpace(request.CategoryId))

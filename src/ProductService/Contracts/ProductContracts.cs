@@ -17,14 +17,17 @@ public sealed record ProductResponse(
     string Id,
     string Name,
     string Barcode,
+    string Image,
     string CategoryId);
 
 public sealed record CreateProductRequest(
     string Name,
     string Barcode,
+    string? Image,
     string CategoryId);
 
 public sealed record UpdateProductRequest(
     string? Name,
     string? Barcode,
+    string? Image,
     string? CategoryId);
