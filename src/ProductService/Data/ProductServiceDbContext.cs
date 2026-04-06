@@ -29,6 +29,18 @@ public class ProductServiceDbContext(DbContextOptions<ProductServiceDbContext> o
                 .HasColumnName("image")
                 .HasColumnType("varchar")
                 .IsRequired();
+
+            entity.Property(category => category.ParentCategoryId)
+                .HasColumnName("parent_category_id")
+                .HasColumnType("varchar");
+
+            entity.HasOne(category => category.ParentCategory)
+                .WithMany(category => category.Subcategories)
+                .HasForeignKey(category => category.ParentCategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasIndex(category => category.ParentCategoryId)
+                .HasDatabaseName("IX_categories_parent_category_id");
         });
 
         modelBuilder.Entity<ProductEntity>(entity =>

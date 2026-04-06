@@ -30,7 +30,14 @@ partial class ProductServiceDbContextModelSnapshot : ModelSnapshot
                 .HasColumnType("varchar")
                 .HasColumnName("name");
 
+            b.Property<string>("ParentCategoryId")
+                .HasColumnType("varchar")
+                .HasColumnName("parent_category_id");
+
             b.HasKey("Id");
+
+            b.HasIndex("ParentCategoryId")
+                .HasDatabaseName("IX_categories_parent_category_id");
 
             b.ToTable("categories");
         });
@@ -86,7 +93,16 @@ partial class ProductServiceDbContextModelSnapshot : ModelSnapshot
 
         modelBuilder.Entity("ProductService.Data.Entities.CategoryEntity", b =>
         {
+            b.HasOne("ProductService.Data.Entities.CategoryEntity", "ParentCategory")
+                .WithMany("Subcategories")
+                .HasForeignKey("ParentCategoryId")
+                .OnDelete(DeleteBehavior.Restrict);
+
             b.Navigation("Products");
+
+            b.Navigation("ParentCategory");
+
+            b.Navigation("Subcategories");
         });
     }
 }
