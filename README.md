@@ -23,6 +23,7 @@ Product endpoints:
 - `GET /products?ids=prod_1,prod_2`
 - `GET /products?categoryId=cat_food`
 - `GET /products?name=leite`
+- `GET /products/related?favoriteIds=prod_1,prod_2&limit=10&maxDistance=8`
 - `POST /products`
 - `PUT /products/{productId}`
 - `DELETE /products/{productId}`

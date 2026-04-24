@@ -67,6 +67,50 @@ public static class ProductEndpoints
         .WithName("GetProducts")
         .WithSummary("Get products by query filters");
 
+        products.MapGet("/related", async (
+            [FromQuery] string? favoriteIds,
+            [FromQuery] int? limit,
+            [FromQuery] int? maxDistance,
+            IProductService productService,
+            CancellationToken ct) =>
+        {
+            if (string.IsNullOrWhiteSpace(favoriteIds))
+            {
+                return Results.BadRequest("favoriteIds is required.");
+            }
+
+            var idList = favoriteIds
+                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .Distinct()
+                .ToList();
+
+            if (idList.Count == 0)
+            {
+                return Results.BadRequest("Invalid favoriteIds format.");
+            }
+
+            var requestedLimit = limit ?? 10;
+            if (requestedLimit <= 0)
+            {
+                return Results.BadRequest("limit must be greater than zero.");
+            }
+
+            if (maxDistance is <= 0)
+            {
+                return Results.BadRequest("maxDistance must be greater than zero.");
+            }
+
+            var relatedProducts = await productService.GetRelatedByFavoriteIdsAsync(
+                idList,
+                requestedLimit,
+                maxDistance,
+                ct);
+
+            return Results.Ok(relatedProducts);
+        })
+        .WithName("GetRelatedProductsByFavorites")
+        .WithSummary("Get related products based on favorite product ids");
+
         products.MapPost(string.Empty, async (
             [FromBody] CreateProductRequest request,
             IProductService productService,

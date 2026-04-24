@@ -1,6 +1,7 @@
 # Build results
-bin/
-obj/
+**/bin/
+**/obj/
+*.lscache
 
 # Visual Studio
 .vs/

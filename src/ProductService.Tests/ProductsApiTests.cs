@@ -174,4 +174,49 @@ public class ProductsApiTests(ProductServiceApiFactory factory) : IClassFixture<
         var idsWithAnotherFilterResponse = await _client.GetAsync("/products?ids=prod_1&name=leite");
         Assert.Equal(HttpStatusCode.BadRequest, idsWithAnotherFilterResponse.StatusCode);
     }
+
+    [Fact]
+    public async Task GetRelatedProducts_ByFavoriteIds_ReturnsSortedCandidatesWithoutFavorites()
+    {
+        using (var scope = factory.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<ProductServiceDbContext>();
+
+            dbContext.Database.EnsureDeleted();
+            dbContext.Database.EnsureCreated();
+
+            dbContext.Categories.AddRange(
+                new CategoryEntity { Id = "cat_food", Name = "Food", Image = "food.png" },
+                new CategoryEntity { Id = "cat_drinks", Name = "Drinks", Image = "drinks.png" });
+
+            dbContext.Products.AddRange(
+                new ProductEntity { Id = "prod_1", Name = "Leite Meio Gordo", Barcode = "560001", CategoryId = "cat_food" },
+                new ProductEntity { Id = "prod_2", Name = "Leite Magro", Barcode = "560002", CategoryId = "cat_food" },
+                new ProductEntity { Id = "prod_3", Name = "Leite Sem Lactose", Barcode = "560003", CategoryId = "cat_food" },
+                new ProductEntity { Id = "prod_4", Name = "Arroz Carolino", Barcode = "560004", CategoryId = "cat_food" },
+                new ProductEntity { Id = "prod_5", Name = "Sumo Laranja", Barcode = "560005", CategoryId = "cat_drinks" });
+
+            dbContext.SaveChanges();
+        }
+
+        var response = await _client.GetAsync("/products/related?favoriteIds=prod_1&limit=3");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var related = await response.Content.ReadFromJsonAsync<List<ProductResponse>>();
+        Assert.NotNull(related);
+        Assert.Equal(3, related!.Count);
+
+        Assert.DoesNotContain(related, p => p.Id == "prod_1");
+        Assert.Equal("prod_2", related[0].Id);
+        Assert.Equal("prod_3", related[1].Id);
+    }
+
+    [Fact]
+    public async Task GetRelatedProducts_WithoutFavoriteIds_ReturnsBadRequest()
+    {
+        SeedBaseData(factory);
+
+        var response = await _client.GetAsync("/products/related");
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
 }
