@@ -248,15 +248,20 @@ components:
           nullable: true
     ProductResponse:
       type: object
-      required: [id, name, barcode, categoryId]
+      required: [id, name, barcode, categoryId, image]
       properties:
         id:
           type: string
         name:
           type: string
+        brand:
+          type: string
+          nullable: true
         barcode:
           type: string
         categoryId:
+          type: string
+        image:
           type: string
     CreateProductRequest:
       type: object
@@ -264,16 +269,31 @@ components:
       properties:
         name:
           type: string
+        brand:
+          type: string
+          nullable: true
         barcode:
           type: string
         categoryId:
           type: string
+        image:
+          type: string
+          nullable: true
     UpdateProductRequest:
       type: object
       properties:
         name:
           type: string
+          nullable: true
+        brand:
+          type: string
+          nullable: true
         barcode:
           type: string
+          nullable: true
         categoryId:
           type: string
+          nullable: true
+        image:
+          type: string
+          nullable: true

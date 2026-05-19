@@ -18,6 +18,7 @@ public partial class ProductService : IProductService
         return new ProductResponse(
             entity.Id,
             entity.Name,
+            entity.Brand,
             entity.Barcode,
             entity.Image,
             entity.CategoryId);

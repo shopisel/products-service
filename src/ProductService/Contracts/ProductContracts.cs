@@ -19,18 +19,21 @@ public sealed record UpdateCategoryRequest(
 public sealed record ProductResponse(
     string Id,
     string Name,
+    string? Brand,
     string Barcode,
     string Image,
     string CategoryId);
 
 public sealed record CreateProductRequest(
     string Name,
+    string? Brand,
     string Barcode,
     string? Image,
     string CategoryId);
 
 public sealed record UpdateProductRequest(
     string? Name,
+    string? Brand,
     string? Barcode,
     string? Image,
     string? CategoryId);
