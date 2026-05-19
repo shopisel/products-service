@@ -32,9 +32,9 @@ public class ProductsApiTests(ProductServiceApiFactory factory) : IClassFixture<
             new CategoryEntity { Id = "cat_drinks", Name = "Drinks", Image = "drinks.png" });
 
         dbContext.Products.AddRange(
-            new ProductEntity { Id = "prod_1", Name = "Leite UHT", Barcode = "560123", CategoryId = "cat_food" },
-            new ProductEntity { Id = "prod_2", Name = "Cereais", Barcode = "560456", CategoryId = "cat_food" },
-            new ProductEntity { Id = "prod_3", Name = "Sumo de Laranja", Barcode = "560789", CategoryId = "cat_drinks" });
+            new ProductEntity { Id = "prod_1", Name = "Leite UHT", Brand = "Mimosa", Barcode = "560123", CategoryId = "cat_food" },
+            new ProductEntity { Id = "prod_2", Name = "Cereais", Brand = null, Barcode = "560456", CategoryId = "cat_food" },
+            new ProductEntity { Id = "prod_3", Name = "Sumo de Laranja", Brand = null, Barcode = "560789", CategoryId = "cat_drinks" });
 
         dbContext.SaveChanges();
     }
@@ -98,6 +98,7 @@ public class ProductsApiTests(ProductServiceApiFactory factory) : IClassFixture<
         var createResponse = await _client.PostAsJsonAsync("/products", new
         {
             name = "Iogurte Natural",
+            brand = "",
             barcode = "560777",
             categoryId = "cat_food"
         });
@@ -114,10 +115,12 @@ public class ProductsApiTests(ProductServiceApiFactory factory) : IClassFixture<
         Assert.NotNull(getByIds);
         Assert.Single(getByIds!);
         Assert.Equal("Iogurte Natural", getByIds[0].Name);
+        Assert.Null(getByIds[0].Brand);
 
         var updateResponse = await _client.PutAsJsonAsync($"/products/{createdProduct.Id}", new
         {
             name = "Iogurte Grego",
+            brand = "",
             barcode = "560888",
             categoryId = "cat_drinks"
         });
@@ -126,6 +129,7 @@ public class ProductsApiTests(ProductServiceApiFactory factory) : IClassFixture<
         var updatedProduct = await updateResponse.Content.ReadFromJsonAsync<ProductResponse>();
         Assert.NotNull(updatedProduct);
         Assert.Equal("Iogurte Grego", updatedProduct!.Name);
+        Assert.Null(updatedProduct.Brand);
         Assert.Equal("560888", updatedProduct.Barcode);
         Assert.Equal("cat_drinks", updatedProduct.CategoryId);
 

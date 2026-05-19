@@ -28,6 +28,11 @@ public partial class ProductService
             product.Name = request.Name.Trim();
         }
 
+        if (request.Brand is not null)
+        {
+            product.Brand = string.IsNullOrWhiteSpace(request.Brand) ? null : request.Brand.Trim();
+        }
+
         if (request.Barcode is not null)
         {
             if (string.IsNullOrWhiteSpace(request.Barcode))

@@ -57,6 +57,10 @@ public class ProductServiceDbContext(DbContextOptions<ProductServiceDbContext> o
                 .HasColumnType("varchar")
                 .IsRequired();
 
+            entity.Property(product => product.Brand)
+                .HasColumnName("brand")
+                .HasColumnType("varchar");
+
             entity.Property(product => product.Barcode)
                 .HasColumnName("barcode")
                 .HasColumnType("varchar")
