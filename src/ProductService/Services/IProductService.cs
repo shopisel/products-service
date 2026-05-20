@@ -7,6 +7,7 @@ public interface IProductService
     Task<IEnumerable<ProductResponse>> GetAllByCategoryAsync(string categoryId, CancellationToken cancellationToken = default);
     Task<IEnumerable<ProductResponse>> SearchByNameAsync(string name, CancellationToken cancellationToken = default);
     Task<IEnumerable<ProductResponse>> GetByIdsAsync(IEnumerable<string> ids, CancellationToken cancellationToken = default);
+    Task<QrCodeLookupResponse> LookupByQrCodeAsync(QrCodeLookupRequest request, CancellationToken cancellationToken = default);
     Task<IEnumerable<ProductResponse>> GetRelatedByFavoriteIdsAsync(
         IEnumerable<string> favoriteIds,
         int limit = 10,

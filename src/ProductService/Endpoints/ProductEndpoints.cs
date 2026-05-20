@@ -132,6 +132,31 @@ public static class ProductEndpoints
         .WithName("CreateProduct")
         .WithSummary("Create product");
 
+        products.MapPost("/qrCode", async (
+            [FromBody] QrCodeLookupRequest request,
+            IProductService productService,
+            CancellationToken ct) =>
+        {
+            if (request is null)
+            {
+                return Results.BadRequest("Request body is required.");
+            }
+
+            var hasBarcode = !string.IsNullOrWhiteSpace(request.Barcode);
+            var hasKeywords = request.Keywords is { Count: > 0 } &&
+                              request.Keywords.Any(keyword => !string.IsNullOrWhiteSpace(keyword));
+
+            if (!hasBarcode && !hasKeywords)
+            {
+                return Results.BadRequest("At least one lookup input is required: barcode or keywords.");
+            }
+
+            var lookup = await productService.LookupByQrCodeAsync(request, ct);
+            return Results.Ok(lookup);
+        })
+        .WithName("LookupProductByQrCode")
+        .WithSummary("Lookup product by barcode/keywords (exact match or related suggestions)");
+
         products.MapPut("/{productId}", async (
             string productId,
             [FromBody] UpdateProductRequest request,

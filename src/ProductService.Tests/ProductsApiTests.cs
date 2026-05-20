@@ -223,4 +223,100 @@ public class ProductsApiTests(ProductServiceApiFactory factory) : IClassFixture<
         var response = await _client.GetAsync("/products/related");
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
+
+    [Fact]
+    public async Task QrCodeLookup_ByBarcode_ReturnsExactMatch()
+    {
+        SeedBaseData(factory);
+
+        var response = await _client.PostAsJsonAsync("/products/qrCode", new
+        {
+            barcode = "560123",
+            keywords = Array.Empty<string>()
+        });
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var lookup = await response.Content.ReadFromJsonAsync<QrCodeLookupResponse>();
+        Assert.NotNull(lookup);
+        Assert.Equal("exact", lookup!.MatchType);
+        Assert.NotNull(lookup.Product);
+        Assert.Equal("prod_1", lookup.Product!.Id);
+        Assert.Empty(lookup.RelatedProducts);
+    }
+
+    [Fact]
+    public async Task QrCodeLookup_ByKeywords_ReturnsExactMatch()
+    {
+        SeedBaseData(factory);
+
+        var response = await _client.PostAsJsonAsync("/products/qrCode", new
+        {
+            barcode = "",
+            keywords = new[] { "Leite", "Mimosa" }
+        });
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var lookup = await response.Content.ReadFromJsonAsync<QrCodeLookupResponse>();
+        Assert.NotNull(lookup);
+        Assert.Equal("exact", lookup!.MatchType);
+        Assert.NotNull(lookup.Product);
+        Assert.Equal("prod_1", lookup.Product!.Id);
+    }
+
+    [Fact]
+    public async Task QrCodeLookup_ByKeywords_ReturnsRelatedWhenNoPerfectMatch()
+    {
+        SeedBaseData(factory);
+
+        var response = await _client.PostAsJsonAsync("/products/qrCode", new
+        {
+            barcode = "",
+            keywords = new[] { "leite", "uht", "doce" }
+        });
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var lookup = await response.Content.ReadFromJsonAsync<QrCodeLookupResponse>();
+        Assert.NotNull(lookup);
+        Assert.Equal("related", lookup!.MatchType);
+        Assert.Null(lookup.Product);
+        Assert.NotEmpty(lookup.RelatedProducts);
+        Assert.Contains(lookup.RelatedProducts, p => p.Id == "prod_1");
+    }
+
+    [Fact]
+    public async Task QrCodeLookup_WithoutBarcodeAndKeywords_ReturnsBadRequest()
+    {
+        SeedBaseData(factory);
+
+        var response = await _client.PostAsJsonAsync("/products/qrCode", new
+        {
+            barcode = "",
+            keywords = Array.Empty<string>()
+        });
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task QrCodeLookup_WithNoisyKeywords_StillFindsExactByCoverage()
+    {
+        SeedBaseData(factory);
+
+        var response = await _client.PostAsJsonAsync("/products/qrCode", new
+        {
+            barcode = "",
+            keywords = new[] { "leite", "mimosa", "de", "ponto", "verde" }
+        });
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var lookup = await response.Content.ReadFromJsonAsync<QrCodeLookupResponse>();
+        Assert.NotNull(lookup);
+        Assert.Equal("exact", lookup!.MatchType);
+        Assert.NotNull(lookup.Product);
+        Assert.Equal("prod_1", lookup.Product!.Id);
+    }
 }
