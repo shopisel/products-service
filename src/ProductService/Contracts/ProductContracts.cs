@@ -37,3 +37,12 @@ public sealed record UpdateProductRequest(
     string? Barcode,
     string? Image,
     string? CategoryId);
+
+public sealed record QrCodeLookupRequest(
+    string Barcode,
+    IReadOnlyList<string> Keywords);
+
+public sealed record QrCodeLookupResponse(
+    string MatchType,
+    ProductResponse? Product,
+    IReadOnlyList<ProductResponse> RelatedProducts);

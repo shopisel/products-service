@@ -170,6 +170,40 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductResponse'
 
+  /products/qrCode:
+    post:
+      summary: Lookup de produto por QRCode (barcode + keywords)
+      description: >
+        Tenta identificar um produto com base no barcode e/ou keywords (nome, marca, etc).
+        Se encontrar match perfeito devolve o produto (matchType=exact). Caso contrário devolve sugestões relacionadas (matchType=related).
+      tags: [Product]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QrCodeLookupRequest'
+            examples:
+              barcode:
+                summary: Match por barcode
+                value:
+                  barcode: "560123"
+                  keywords: []
+              keywords:
+                summary: Match por keywords
+                value:
+                  barcode: ""
+                  keywords: ["agua", "caramulo", "nascente", "ponto", "verde"]
+      responses:
+        '200':
+          description: Resultado do lookup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QrCodeLookupResponse'
+        '400':
+          description: Pedido inválido (sem barcode e sem keywords úteis)
+
   /products/{productId}:
     put:
       summary: Atualizar produto
@@ -297,3 +331,34 @@ components:
         image:
           type: string
           nullable: true
+
+    QrCodeLookupRequest:
+      type: object
+      required: [barcode, keywords]
+      properties:
+        barcode:
+          type: string
+          description: Barcode do produto (pode ser string vazia; é obrigatório enviar pelo menos barcode ou keywords)
+          example: "560123"
+        keywords:
+          type: array
+          description: Lista de tokens/keywords (nome, marca, etc)
+          items:
+            type: string
+          example: ["agua", "caramulo", "nascente"]
+
+    QrCodeLookupResponse:
+      type: object
+      required: [matchType, product, relatedProducts]
+      properties:
+        matchType:
+          type: string
+          description: Tipo de match encontrado
+          enum: [exact, related, none]
+        product:
+          $ref: '#/components/schemas/ProductResponse'
+          nullable: true
+        relatedProducts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductResponse'
