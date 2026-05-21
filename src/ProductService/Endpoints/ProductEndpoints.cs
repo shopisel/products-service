@@ -6,6 +6,8 @@ namespace ProductService.Endpoints;
 
 public static class ProductEndpoints
 {
+    private const int MaxProductsPageSize = 200;
+
     public static void MapProductEndpoints(this IEndpointRouteBuilder app)
     {
         var products = app.MapGroup("/products").WithTags("Product");
@@ -14,12 +16,16 @@ public static class ProductEndpoints
             [FromQuery] string? ids,
             [FromQuery] string? categoryId,
             [FromQuery] string? name,
+            [FromQuery] int? skip,
+            [FromQuery] int? limit,
             IProductService productService,
             CancellationToken ct) =>
         {
             var hasIds = !string.IsNullOrWhiteSpace(ids);
             var hasCategoryId = !string.IsNullOrWhiteSpace(categoryId);
             var hasName = !string.IsNullOrWhiteSpace(name);
+            var hasSkip = skip.HasValue;
+            var hasLimit = limit.HasValue;
 
             if (!hasIds && !hasCategoryId && !hasName)
             {
@@ -29,6 +35,26 @@ public static class ProductEndpoints
             if (hasIds && (hasCategoryId || hasName))
             {
                 return Results.BadRequest("When ids is informed it must be the only filter.");
+            }
+
+            if (hasSkip && !hasLimit)
+            {
+                return Results.BadRequest("limit is required when skip is informed.");
+            }
+
+            if (skip is < 0)
+            {
+                return Results.BadRequest("skip must be greater than or equal to zero.");
+            }
+
+            if (limit is <= 0)
+            {
+                return Results.BadRequest("limit must be greater than zero.");
+            }
+
+            if (limit is > MaxProductsPageSize)
+            {
+                return Results.BadRequest($"limit must be less than or equal to {MaxProductsPageSize}.");
             }
 
             if (hasIds)
@@ -49,19 +75,17 @@ public static class ProductEndpoints
 
             if (hasCategoryId && hasName)
             {
-                var byCategory = await productService.GetAllByCategoryAsync(categoryId!, ct);
-                var filtered = byCategory
-                    .Where(product => product.Name.Contains(name!, StringComparison.OrdinalIgnoreCase));
+                var filtered = await productService.SearchByCategoryAndNameAsync(categoryId!, name!, skip, limit, ct);
                 return Results.Ok(filtered);
             }
 
             if (hasCategoryId)
             {
-                var byCategory = await productService.GetAllByCategoryAsync(categoryId!, ct);
+                var byCategory = await productService.GetAllByCategoryAsync(categoryId!, skip, limit, ct);
                 return Results.Ok(byCategory);
             }
 
-            var byName = await productService.SearchByNameAsync(name!, ct);
+            var byName = await productService.SearchByNameAsync(name!, skip, limit, ct);
             return Results.Ok(byName);
         })
         .WithName("GetProducts")

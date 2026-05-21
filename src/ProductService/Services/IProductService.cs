@@ -4,8 +4,25 @@ namespace ProductService.Services;
 
 public interface IProductService
 {
-    Task<IEnumerable<ProductResponse>> GetAllByCategoryAsync(string categoryId, CancellationToken cancellationToken = default);
-    Task<IEnumerable<ProductResponse>> SearchByNameAsync(string name, CancellationToken cancellationToken = default);
+    Task<IEnumerable<ProductResponse>> GetAllByCategoryAsync(
+        string categoryId,
+        int? skip = null,
+        int? limit = null,
+        CancellationToken cancellationToken = default);
+
+    Task<IEnumerable<ProductResponse>> SearchByNameAsync(
+        string name,
+        int? skip = null,
+        int? limit = null,
+        CancellationToken cancellationToken = default);
+
+    Task<IEnumerable<ProductResponse>> SearchByCategoryAndNameAsync(
+        string categoryId,
+        string name,
+        int? skip = null,
+        int? limit = null,
+        CancellationToken cancellationToken = default);
+
     Task<IEnumerable<ProductResponse>> GetByIdsAsync(IEnumerable<string> ids, CancellationToken cancellationToken = default);
     Task<QrCodeLookupResponse> LookupByQrCodeAsync(QrCodeLookupRequest request, CancellationToken cancellationToken = default);
     Task<IEnumerable<ProductResponse>> GetRelatedByFavoriteIdsAsync(
